@@ -2,7 +2,7 @@ import torch
 import gpytorch as gp
 from typing import List
 
-from gp_models import GPModel
+from utils.gp_models import GPModel
 
 def sample_gp_prior(
         kernel: gp.kernels.Kernel,
