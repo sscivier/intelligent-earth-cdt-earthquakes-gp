@@ -16,6 +16,7 @@ You can install the required dependencies to run the notebook `workbook.ipynb` u
 ```bash
 pip install -r requirements.txt
 ```
+It is recommended to install the dependencies in a virtual environment.
 See below for how to run the notebooks without any installation.
 
 ## Usage
