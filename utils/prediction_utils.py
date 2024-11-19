@@ -11,6 +11,21 @@ def predict(
     likelihood: gp.likelihoods.Likelihood | None = None,
     num_samples: int | None = None,
 ):
+    """
+    Predict the output of the GP model.
+
+    Args:
+        model (ApproximateGPModel): The GP model.
+        x (torch.Tensor): The input tensor.
+        likelihood (gpytorch.likelihoods.Likelihood): The likelihood function.
+        num_samples (int): The number of samples to draw from the distribution.
+
+    Returns:
+        torch.Tensor: The mean of the output distribution.
+        torch.Tensor: The standard deviation of the output distribution.
+        torch.Tensor: The samples drawn from the output distribution.
+
+    """
     
     with torch.no_grad():
 
@@ -35,6 +50,20 @@ def pdf_num_sigma(
     likelihood: gp.likelihoods.Likelihood | None = None,
     num_sigma_clip: float = 5.,
 ):
+    """
+    Compute the probability density function (pdf) predicted by the GP model in terms of the number of standard deviations from the mean.
+
+    Args:
+        model (ApproximateGPModel): The GP model.
+        test_coordinates (torch.Tensor): The test coordinates.
+        test_velocities (torch.Tensor): The test velocities.
+        likelihood (gpytorch.likelihoods.Likelihood): The likelihood function.
+        num_sigma_clip (float): The maximum number of standard deviations to clip the pdf.
+
+    Returns:
+        np.ndarray: The pdf in terms of the number of standard deviations from the mean.
+
+    """    
     
     prob_density = torch.zeros((test_coordinates.shape[0], test_velocities.shape[0]))
     

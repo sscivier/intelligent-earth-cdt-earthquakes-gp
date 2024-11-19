@@ -57,6 +57,7 @@ class ApproximateGPModel(gp.models.ApproximateGP):
 
     Args:
         inducing_points (torch.Tensor): The inducing points for the variational distribution.
+        kernel (gpytorch.kernels.Kernel): The covariance kernel for the GP model.
 
     Attributes:
         mean_module (gpytorch.means.Mean): The mean module for the GP model.
@@ -74,6 +75,7 @@ class ApproximateGPModel(gp.models.ApproximateGP):
 
         Args:
             inducing_points (torch.Tensor): The inducing points for the variational distribution.
+            kernel (gpytorch.kernels.Kernel): The covariance kernel for the GP model.
 
         """
         variational_distribution = gp.variational.CholeskyVariationalDistribution(

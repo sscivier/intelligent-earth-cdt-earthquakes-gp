@@ -6,6 +6,40 @@ def pml_damping_profile(
         num_pml_points: int,
         max_damping: float,
 ):
+        """
+        Computes the damping profile for a Perfectly Matched Layer (PML).
+
+        This function generates a damping profile for the PML boundary in a finite 
+        difference wave simulation. The damping profile is applied to the boundary 
+        to absorb outgoing waves and prevent reflections. The profile starts from 
+        zero at the interior of the model and increases towards the boundary, where 
+        it reaches the maximum damping value.
+
+        Args:
+                num_coordinates (int): The number of spatial points in the model (i.e., the 
+                        number of grid points in the spatial domain).
+                num_pml_points (int): The number of points at the boundary where the PML 
+                        damping is applied.
+                max_damping (float): The maximum damping value at the outer boundary of the 
+                        PML.
+
+        Returns:
+                np.ndarray: A 1D array of size `num_coordinates` representing the damping 
+                        profile, with values increasing from zero to `max_damping` at the boundary.
+
+        Example:
+                damping = pml_damping_profile(
+                num_coordinates=100,
+                num_pml_points=10,
+                max_damping=0.1
+                )
+        
+        Notes:
+                - The damping is applied in a linear fashion starting from zero at the 
+                interior of the model and gradually increasing to `max_damping` at the 
+                boundary defined by `num_pml_points`.
+                - The function assumes that the PML region is located at the end of the model.
+        """
         
         damping = np.zeros((num_coordinates,))
 
@@ -26,6 +60,49 @@ def finite_difference_solver(
         source_location: int,
         damping: np.ndarray,
 ):
+        """
+        Solves a finite difference model for wave propagation with an absorbing boundary.
+
+        This function implements a finite difference method to solve the wave equation 
+        for displacement in a 1D medium, and includes a perfectly matched layer (PML) boundary 
+        for wave absorption at the bottom boundary. The solver computes the displacement field over a specified 
+        number of time steps and tracks the peak amplitudes of the displacement for each 
+        velocity model.
+
+        Args:
+                velocity_models (np.ndarray): A 2D array of velocity models with shape 
+                        (num_velocity_models, num_coordinates), where each row represents the 
+                        velocity values at each coordinate point for a given model.
+                num_coordinates (int): The number of spatial points in the model (i.e., the 
+                        number of grid points in the spatial domain).
+                num_time_steps (int): The number of time steps for the simulation.
+                delta_x (float): The spatial step size.
+                delta_t (float): The time step size.
+                source (np.ndarray): A 1D array representing the source time function, where 
+                        each entry corresponds to the source value at a given time step.
+                source_location (int): The index of the spatial location of the source in the model.
+                damping (np.ndarray): A 1D array representing the damping profile for the PML 
+                        absorbing boundary. It should have the same size as `num_coordinates`.
+
+        Returns:
+                Tuple[np.ndarray, np.ndarray]:
+                - peak_amplitudes (np.ndarray): A 2D array of shape (num_velocity_models, 
+                        num_time_steps), where each entry corresponds to the peak amplitude of 
+                        the displacement field for a given velocity model and time step.
+                - u_plot (np.ndarray): A 2D array of shape (num_time_steps, num_coordinates) 
+                        representing the displacement field over time for a single velocity model 
+                        (for plotting).
+        
+        Notes:
+                - The function uses a second-order Runge-Kutta method (Ralston's method) 
+                for time integration on the absorbing boundary auxilliary variables, 
+                and three-point centred difference finite differences for time integration 
+                on the wavefield.
+                - The PML (Perfectly Matched Layer) boundary is applied to absorb outgoing 
+                waves at the boundaries of the model.
+                - A free-surface boundary condition is applied at the surface 
+                (x = 0), where the displacement gradient is zero.
+        """        
         
         rk_alpha = 2. / 3.  # 2nd-order Runge-Kutta alpha parameter (2/3 corresponds to Ralston's method)
 
