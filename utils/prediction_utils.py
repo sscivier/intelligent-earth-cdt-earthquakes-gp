@@ -21,7 +21,7 @@ def predict(
             predicted_distribution = model(x)
 
     if num_samples is not None:
-        samples = predicted_distribution.sample(sample_shape=torch.Size([num_samples]))
+        samples = predicted_distribution.sample(sample_shape=torch.Size([num_samples])).numpy()
         return predicted_distribution.mean, predicted_distribution.stddev, samples
     
     else:
