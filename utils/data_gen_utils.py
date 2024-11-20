@@ -1,8 +1,28 @@
 import torch
+import numpy as np
 import gpytorch as gp
 from typing import List
 
 from utils.gp_models import GPModel
+
+
+def set_seed(seed):
+    """
+    Set the seed for random number generation in PyTorch and NumPy.
+
+    This function ensures reproducibility by setting the seed for both
+    PyTorch and NumPy random number generators.
+
+    Parameters:
+    seed (int): The seed value to set for the random number generators.
+
+    Returns:
+    None
+    """
+
+    torch.manual_seed(seed)
+    np.random.seed(seed)
+
 
 def sample_gp_prior(
         kernel: gp.kernels.Kernel,

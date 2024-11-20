@@ -51,7 +51,7 @@ def gaussian_derivative(
 
 def sinusoidal_decay(
     time: np.ndarray,
-    center_frequency: float,
+    frequency: float,
     time_shift: float = 0.0,
     damping_factor: float = 1.0,
 ):
@@ -71,7 +71,7 @@ def sinusoidal_decay(
         np.ndarray: Sinusoidal decay function values at each time step.
     """
     
-    term = 2 * np.pi * center_frequency * (time - time_shift)
+    term = 2 * np.pi * frequency * (time - time_shift)
     decay = np.exp(-damping_factor * (time - time_shift)) * np.sin(term)
     decay[time < time_shift] = 0.0
     return decay - np.mean(decay)
