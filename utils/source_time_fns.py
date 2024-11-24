@@ -77,7 +77,7 @@ def sinusoidal_decay(
     return decay - np.mean(decay)
 
 
-def double_couple(
+def modulated_slip(
     time: np.ndarray,
     frequency: float,
     rise_time: float,
@@ -85,9 +85,9 @@ def double_couple(
     time_shift: float = 0.0,
 ):
     """
-    Generates a double-couple source time function for seismic events.
+    Generates a "modulated slip" source time function.
 
-    The double-couple source models the slip rate for an earthquake with a
+    This source models the slip rate for an earthquake with a
     linear rise to peak followed by a linear fall to zero. The slip rate is
     modulated by a sinusoidal function to include oscillatory behavior.
 
@@ -99,7 +99,7 @@ def double_couple(
         time_shift (float): Time at which the source starts (seconds).
 
     Returns:
-        np.ndarray: Double-couple source function values at each time step.
+        np.ndarray: Source function values at each time step.
     """
     
     slip_rate = np.zeros_like(time)
